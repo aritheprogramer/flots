@@ -1,0 +1,29 @@
+name: Bug report
+description: Report a reproducible browser problem
+title: "[Bug] "
+body:
+  - type: input
+    id: version
+    attributes:
+      label: Flots version and macOS version
+      placeholder: 0.3.3 / macOS 27 / Apple Silicon
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      description: Include a public URL if relevant. Never include passwords, cookies, tokens or your browser profile.
+    validations:
+      required: true
+  - type: textarea
+    id: behavior
+    attributes:
+      label: Expected and actual behavior
+    validations:
+      required: true
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Screenshots or error text
+      description: Remove personal information first.

@@ -1,0 +1,22 @@
+! flots starter network rules — original domain rules, MIT licensed with this project.
+! Conservative, third-party-only; reviewed 2026-10-25. Not a comprehensive filter list.
+||doubleclick.net^$third-party
+||googlesyndication.com^$third-party
+||googleadservices.com^$third-party
+||google-analytics.com^$third-party
+||adnxs.com^$third-party
+||adsrvr.org^$third-party
+||criteo.com^$third-party
+||criteo.net^$third-party
+||taboola.com^$third-party
+||outbrain.com^$third-party
+||scorecardresearch.com^$third-party
+||quantserve.com^$third-party
+||connect.facebook.net^$third-party
+||amazon-adsystem.com^$third-party
+||pubmatic.com^$third-party
+||rubiconproject.com^$third-party
+||openx.net^$third-party
+||hotjar.com^$third-party
+||mouseflow.com^$third-party
+||clarity.ms^$third-party

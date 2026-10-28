@@ -1,0 +1,39 @@
+{
+  "name": "flots",
+  "productName": "flots",
+  "version": "0.3.3",
+  "description": "A quiet, lightweight Chromium browser for macOS",
+  "private": true,
+  "main": "dist/main/main.cjs",
+  "scripts": {
+    "dev": "npm run build && electron .",
+    "start": "electron .",
+    "build": "npm run typecheck && node scripts/build.mjs",
+    "typecheck": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "test:runtime": "npm run build && node scripts/runtime-test.mjs",
+    "benchmark": "npm run build && node scripts/benchmark.mjs",
+    "package": "node scripts/release.mjs",
+    "install:electron": "node scripts/install-electron.mjs",
+    "test:v3": "npm run build && playwright test",
+    "test:storage": "npm run build && node scripts/storage-test.mjs",
+    "test:webauthn": "npm run build && node scripts/webauthn-test.mjs",
+    "test:response": "npm run build && node scripts/responsiveness-test.mjs"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "dependencies": {
+    "@ghostery/adblocker": "^2.20.1"
+  },
+  "devDependencies": {
+    "@electron/packager": "^20.3.0",
+    "@types/node": "^26.6.5",
+    "electron": "45.0.0",
+    "esbuild": "^0.28.2",
+    "playwright": "^1.64.1",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.5"
+  }
+}
