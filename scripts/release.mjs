@@ -9,6 +9,8 @@ import { version, releaseRoot, releaseDir, bundlePath } from './release-paths.mj
 if (existsSync(releaseDir)) throw new Error(`Release v${version} already exists. Increment package.json for the next release.`);
 const source = process.cwd();
 const cache = path.join(os.homedir(), 'Library/Caches/flots-build');
+const localBundle = path.join(os.homedir(), 'Applications/Flots Builds', `v${version}`, 'Flots.app');
+if (existsSync(localBundle)) throw new Error(`Local build already exists: ${localBundle}`);
 await mkdir(cache, { recursive: true });
 const staging = await mkdtemp(path.join(cache, `release-${version}-`));
 const run = (command, args, extraEnv = {}) => new Promise((resolve, reject) => {
@@ -31,9 +33,15 @@ await run(process.execPath, ['scripts/dmg.mjs']);
 const { stdout: sbom } = await promisify(execFile)('npm', ['sbom', '--omit=dev', '--sbom-format', 'cyclonedx'], { cwd: staging, maxBuffer: 8 * 1024 * 1024 });
 await writeFile(path.join(staging, 'release', `v${version}`, 'SBOM.cdx.json'), sbom);
 await mkdir(releaseRoot, { recursive: true });
-await cp(path.join(staging, 'release', `v${version}`), releaseDir, { recursive: true, verbatimSymlinks: true, errorOnExist: true, force: false });
-await run('codesign', ['--verify', '--deep', '--strict', bundlePath]);
-await run(process.execPath, ['scripts/package-smoke.mjs'], { FLOTS_SMOKE_BUNDLE: bundlePath });
+await mkdir(path.dirname(localBundle), { recursive: true });
+await cp(path.join(staging, 'release', `v${version}`, 'flots-darwin-arm64/flots.app'), localBundle, { recursive: true, verbatimSymlinks: true, errorOnExist: true, force: false });
+await run('codesign', ['--verify', '--deep', '--strict', localBundle]);
+await run(process.execPath, ['scripts/package-smoke.mjs'], { FLOTS_SMOKE_BUNDLE: localBundle });
+await mkdir(path.dirname(bundlePath), { recursive: true });
+for (const name of [`Flots-${version}-macOS-arm64.dmg`, 'SHA256SUMS.txt', 'SBOM.cdx.json']) {
+  await cp(path.join(staging, 'release', `v${version}`, name), path.join(releaseDir, name), { errorOnExist: true, force: false });
+}
+await symlink(localBundle, bundlePath);
 const next = path.join(releaseRoot, `.Flots-${process.pid}.app`);
 await symlink(path.relative(releaseRoot, bundlePath), next);
 await rename(next, path.join(releaseRoot, 'Flots.app'));
