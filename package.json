@@ -24,7 +24,7 @@
     "node": ">=22"
   },
   "dependencies": {
-    "@ghostery/adblocker": "^2.20.1"
+    "@ghostery/adblocker": "^2.20.3"
   },
   "devDependencies": {
     "@electron/packager": "^20.3.0",
